@@ -1,14 +1,16 @@
 const monsterArea = document.getElementById('monster-container');
 const createMonsterArea = document.getElementById('create-monster');
-const fwdBtn = document.getElementById('forward');
-const bkwdBtn = document.getElementById('back');
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   loadAllMonsters();
   createMonsterForm ();
   const createMonsterBtn = document.querySelector('#create-btn');
   getForm().addEventListener('submit', addNewMonster);
+  const fwdBtn = document.getElementById('forward');
   fwdBtn.addEventListener('click', getNextFifty);
+  const bkwdBtn = document.getElementById('back');
   bkwdBtn.addEventListener('click', getPreviousFifty);
 
 })
@@ -36,20 +38,26 @@ function renderMonster(monster) {
   nameElement.appendChild(bioElement);
 }
 
-
 let page = 1;
+
 function getNextFifty(event) {
   page++
-  fetch ('http://localhost:3000/monsters/?_limit=50&_page=${page}')
+  fetch (`http://localhost:3000/monsters/?_limit=50&_page=${page}`)
     .then(res => res.json())
-    .then(data => data.forEach(monster => {renderMonster(monster)}));
+    .then(data => {
+      monsterArea.innerHTML = "";
+      data.forEach(monster => renderMonster(monster))
+    });
 }
 
 function getPreviousFifty(event) {
   page--
-  fetch('http://localhost:3000/monsters/?_limit=50&page=${page}')
+  fetch(`http://localhost:3000/monsters/?_limit=50&page=${page}`)
     .then(res => res.json())
-    .then(data => data.forEach(monster => {renderMonster(monster)}));
+    .then(data => {
+      monsterArea.innerHTML = "";
+      data.forEach(monster => {renderMonster(monster)})
+    });
 }
 ///////////////// Create Form to Create New Monster ///////////
 
